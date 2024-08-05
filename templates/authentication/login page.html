@@ -1,0 +1,140 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUMS</title>
+    <link rel="icon" href="cms-logo.png">
+
+    <style>
+        * {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        body{
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        p{
+            font-size:x-large;
+        }
+
+        img{
+            width: 100px;
+        }
+
+        input[type=text],input[type=password]{
+            height: 35px;
+            width: 260px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            outline: none;
+            padding: 10px;
+        }
+
+        .btn{
+            width: 75px;
+            height: 35px;
+            margin-right: 4px;
+            color: white;
+            box-sizing: border-box;
+            border: 0px;
+            outline: none;
+        }
+
+        .login{
+            background-color: rgb(160, 35, 76);
+        }
+
+        .reset{
+            background-color: black;
+        }
+
+        p.forgot-pw{
+            font-size: 12px;
+            font-weight: -300;
+            padding-left: 5px;
+            color: gray;
+        }
+
+        .scale{
+            transform: scale(1.2,1.2);
+        }
+
+        p.footer{
+            position: absolute;
+            bottom: 0px;
+            font-size: small;
+            color: gray;
+            left: 500px;
+        }
+        .messages-container {
+            color:red;
+             }
+    </style>
+</head>
+
+<body>
+    <div class="scale">
+    <table>
+        <tr>
+            <td><img src="{% static 'cms-logo.png' %}" alt="Shradhavan Labathe gnyanam"></td>
+            <td style="width:20px"></td>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <p ><b>AUMS</b> | Login</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <input class="input" style="margin-bottom: 15px;" type="text" name="username" id="username" placeholder="Enter your username">
+                                    <br><input class="input" type="password" name="password" id="password" placeholder="Enter your password">
+                                    <div class="messages-container">
+                                        <ul class="messages" style="list-style-type:none">
+                                            {% if messages %}
+                                            <div class="messages-container">
+                                              <ul class="messages" style="list-style-type:none">
+                                                {% for message in messages %}
+                                                <li class="{{ message.tags }}">{{ message }}</li>
+                                                {% endfor %}
+                                              </ul>
+                                            </div>
+                                            {% endif %}
+
+                                <p class="forgot-pw" id="btn"><a href=" {% url 'pass_reset' %}" style="text-decoration:none;color:black; ">Forgot password</a></p>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input class="btn login" type="submit" value="Login"><input class="reset btn" type="reset" value="Reset"></td>
+                    </tr>
+                </form>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    <footer><p class="footer">© Copyright 2023. Amrita Vishwa Vidyapeetham. mtj v1.0</p></footer>
+</body>
+<script>
+    let btn = document.querySelector('#btn');
+    btn.onclick = function () {
+      ;
+    }
+
+</script>
+
+</html>

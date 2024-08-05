@@ -1,0 +1,838 @@
+{% load static %}
+{% csrf_token %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUMS</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="cms-logo.png">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+</head>
+<style>
+    html, body {margin: 0; height: 100%; overflow: hidden}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  font-family: 'Poppins';
+  }
+
+.user-img{
+    min-width: 60px;
+        max-width:60px;
+        height: 60px;
+        border-radius: 100%;
+
+}
+
+.sidebar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 80px;
+    background-color: black;
+    padding: .4rem 0.8rem;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active ~ .main-content{
+    left: 250px;
+    width: calc(100% - 250px); 
+}
+
+.sidebar.active{
+    width: 250px;
+    height: 100%;
+}
+
+
+
+.sidebar #btn{
+    position: absolute;
+    color: white;
+    top : .4rem;
+    left: 50%;
+    font-size: 1.2rem;
+    line-height: 50px;
+    transform: translateX(-50%);
+
+}
+
+.sidebar.active #btn{
+    left: 90%;
+    transform: rotate(90deg);
+}
+
+.sidebar .top .logo{
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    opacity: 0;
+}
+
+.sidebar .logo img{
+    height: 50px;
+    margin: 8px;
+    padding: 2px;
+}
+
+.sidebar.active .top .logo{
+    opacity: 1;
+}
+
+.top .logo i{
+    font-size: 2rem;
+    margin-right: 5px;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.user p{
+    color: white;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+.bold{
+    font-weight: 600;
+}
+
+.sidebar p{
+    opacity: 0;
+}
+.sidebar.active p{
+    opacity: 1;
+}
+
+.sidebar ul li{
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 90%;
+    margin: 0.8rem auto;
+    line-height: 50px;
+}
+
+.sidebar ul li a{
+    color: white;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 0.8rem;
+}
+
+.sidebar ul li a:hover{
+    background-color: white;
+    color: black;
+    padding: 0px;
+}
+
+.sidebar i{
+  scale: 1.2;
+}
+
+.sidebar.active .top i{
+  transform: rotate(90deg);
+}
+
+.sidebar ul li a i{
+    min-width: 50px;
+    text-align: center;
+    height: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+}
+
+.sidebar .nav-item{
+    opacity: 0;
+}
+
+.sidebar.active .nav-item{
+    opacity: 1;
+}
+
+.sidebar ul li .tooltip{
+    position: absolute;
+    background-color: #222229;
+    background-image: linear-gradient(62deg, #222229 0%, #745368 100%);
+        left: 125px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    top: 50%;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+    border-radius: .6rem;
+    padding: .4rem 1.2rem;
+    line-height: 1.8rem;
+    z-index: 20;
+    opacity: 0;
+}
+
+.sidebar ul li:hover .tooltip{
+    opacity: 1;
+}
+
+.sidebar.active ul li .tooltip{
+    display: none;
+}
+
+.sidebar.active ul li{
+  font-weight: bold;
+}
+
+.main-content{
+    position: relative;
+    background-color: #eee;
+    min-height: 100vh;
+    top: 0;
+    left: 80px;
+    transition: all 0.5s ease;
+    width: calc(100% - 80px);
+}
+
+.container{
+    background-color: white;
+    margin: 0;
+    padding: 1rem;
+    padding-left: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Course-menu{
+    background-color: white;
+    margin: 20px;
+    border-radius: 20px;
+    display: flex;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+
+}
+
+.contL{
+    padding: 50px;
+    margin: 20px;
+    margin-top: 5px;
+    margin-right: 0px;
+    width: 48%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    position: absolute;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+
+}
+
+.contR{
+    margin: 15px;
+    margin-top: 5px;
+    float: right;
+    background-color: rgb(255, 255, 255);
+    width: 47%;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+
+}
+
+
+.Course-menu{
+    overflow: visible;
+}
+
+.Course-menu li{
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    margin: 15px;
+    background-color: #b32469;
+    display: flex;
+    width: fit-content;
+    float: left;
+    border-radius: 30px;
+}
+
+.Course-menu table{
+    width: 100%;
+    background-color: rgb(244, 244, 244);
+    overflow: visible;
+    border-radius: 15px;
+    margin: 10px;
+    background-color: white;
+}
+
+.Course-menu a{
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+    font-weight: bolder;
+    border-radius: 30px;
+    padding: 12px 15px;
+    padding-left: 15px;
+    float: left;
+}
+
+.Course-menu a:hover{
+    background-color: #7b1948;
+}
+
+
+.Course-menu i{
+    border-radius: 30px;
+    background-color: #b32469;
+    padding: 8px;
+    color: #ffffff;
+    font-size: xx-large;
+
+}
+
+.Course-menu i:hover{
+    background-color: #7b1948;
+}
+
+
+.Course-menu ul{
+    list-style-type: none;
+}
+
+
+.wrapper{
+    width: 100%;
+    height: 70%;
+    background: #fff;
+    border-radius: 10px;
+    scale: 0.88;
+    margin-top: -10px;
+  }
+  .wrapper header{
+    display: flex;
+    align-items: center;
+    padding: 25px 30px 10px;
+    justify-content: space-between;
+  }
+  header .icons{
+    display: flex;
+  }
+  header .icons span{
+    height: 38px;
+    width: 38px;
+    margin: 0 1px;
+    cursor: pointer;
+    color: #878787;
+    text-align: center;
+    line-height: 38px;
+    font-size: 1.9rem;
+    user-select: none;
+    border-radius: 50%;
+  }
+  .icons span:last-child{
+    margin-right: -10px;
+  }
+  header .icons span:hover{
+    background: #f2f2f2;
+  }
+  header .current-date{
+    font-size: 1.45rem;
+    font-weight: 500;
+  }
+  .calendar{
+    padding: 20px;
+  }
+  .calendar ul{
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    text-align: center;
+  }
+  .calendar .days{
+    margin-bottom: 20px;
+  }
+  .calendar li{
+    color: #333;
+    width: calc(100% / 7);
+    font-size: 1.07rem;
+  }
+  .calendar .weeks li{
+    font-weight: 500;
+    cursor: default;
+  }
+  .calendar .days li{
+    z-index: 1;
+    cursor: pointer;
+    position: relative;
+    margin-top: 30px;
+  }
+  .days li.inactive{
+    color: #aaa;
+  }
+  .days li.active{
+    color: #fff;
+  }
+  .days li::before{
+    position: absolute;
+    content: "";
+    left: 50%;
+    top: 50%;
+    height: 40px;
+    width: 40px;
+    z-index: -1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .days li.active::before{
+    background: #9B59B6;
+  }
+  .days li:not(.active):hover::before{
+    background: #f2f2f2;
+  }
+
+  .sidebar ul{
+    margin-top: 150px;
+  }
+  .user{
+    margin-top: 150px;
+  }
+
+
+
+  .c-dropbtn {
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .c-dropbtn:hover, .c-dropbtn:focus {
+    color: #461f32;
+    scale: 1.2;
+  }
+  
+  .c-dropdown {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+  }
+  
+  .c-dropdown-content {
+    border-radius: 20px;
+    display: none;
+    position: absolute;
+    background-color: #7b1948;;
+    width: 150px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    float: right;
+    right: 0;
+    margin-top: 10px;
+  }
+  
+  .c-dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    float: none;
+    font-weight: 200;
+  }
+  
+  .c-dropdown a:hover {background-color: #b32469;
+  border-radius: 0px;
+}
+  
+  .show {display: block;}
+
+  .c-dropbtn:hover{
+    scale: 1;
+    color: white;
+  }
+
+
+
+
+  .noti-dropbtn {
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .noti-dropbtn:hover, .noti-dropbtn:focus {
+    color: #461f32;
+    scale: 1.2;
+  }
+  
+  .noti-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .noti-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #d6d6d6;
+    min-width: 250px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    float: right;
+    right: 0;
+  }
+  
+  .noti-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .noti-dropdown a:hover {background-color: #ddd;}
+  
+  .show {display: block;}
+
+
+  
+
+
+
+  
+
+  .c2-dropbtn {
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .c2-dropbtn:hover, .c2-dropbtn:focus {
+    color: #461f32;
+    scale: 1.2;
+  }
+  
+  .c2-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .c2-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #7b1948;;
+    width: 150px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    float: right;
+    right: 0;
+    margin-top: 10px;
+  }
+  
+  .c2-dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    float: none;
+    font-weight: 200;
+  }
+  
+  .c2-dropdown a:hover {background-color: #ddd;}
+  
+  .show {display: block;}
+
+  .c2-dropbtn:hover{
+    scale: 1;
+    color: white;
+  }
+
+
+  </style>
+<body>
+
+    <div class="sidebar" id="btn">
+        <div class="top">
+            <div class="logo"><a href="{% url 'aums'%}">
+                <img src={% static 'amrita-logo.png' %}  alt=""></a>
+            </div>
+            <i class='bx bx-chevrons-right' id="btn"></i>
+        </div>
+
+        <ul>
+            <li>
+                <a href="{% url 'attendance'%}">
+                    <i class='bx bx-calendar'></i> <span class="nav-item">Attendace</span>
+                </a>
+                <span class="tooltip">Attendance</span>
+            </li>
+
+            <li>
+                <a href="{% url 'marks'%}">
+                    <i class="bx bxs-grid-alt"></i>
+                    <span class="nav-item">Marks</span>
+                </a>
+                <span class="tooltip">Marks</span>
+            </li>
+
+            <li>
+                <a href="{% url 'grades'%}">
+                    <i class='bx bxs-graduation'></i> <span class="nav-item">Grades</span>
+                </a>
+                <span class="tooltip">Grades</span>
+
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class='bx bxs-credit-card'></i>
+                    <span class="nav-item">Fees</span>
+                </a>
+                <span class="tooltip">Fees</span>
+            </li>
+            <li>
+                <a href="https://aumscb.amrita.edu/opac/biblio/opacSearch?searchYN=N">
+                    <i class='bx bx-book'></i> <span class="nav-item">Library</span>
+                </a>
+                <span class="tooltip">Library</span>
+            </li>
+        </ul>
+
+        <div class="user">
+            <a href="{% url 'profile'%}"><img src="{{profile_pic}}" alt="" class="user-img"></a>
+            <div>
+                <a href="profile.html" style="text-decoration: none;">
+                    <p class="bold">{{first_name}}</p>
+                </a>
+                <a href="{% url 'signout'%}" style="text-decoration:none;color:white;"><p>logout</p></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content" id="body">
+        <div class="container">
+            <h1>Welcome, {{first_name}} {{last_name}}</h1>
+            <div>
+
+                <div class="noti-dropdown">
+                    <i onclick="myFunction()" class="noti-dropbtn bx bxs-bell-ring"
+                        style="font-size:xx-large;padding: 5px;"></i>
+                    <div id="noti-Dropdown" class="noti-dropdown-content">
+                        <a href="#home">Home</a>
+                        <a href="#about">About</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </div>
+
+                <a href="#"><i style="font-size:xx-large;padding: 5px;margin-left: 10px;" class='bx bx-support'></i></a>
+            </div>
+        </div>
+
+        <div class="Course-menu">
+            <table>
+                <tr>
+                    <td class="course">
+                        <ul>{% for record in attendance_records2 %}
+                            <li><a href="#">{{record.sub_code}}</a>
+
+                                <div class="c-dropdown">
+                                    <i onclick="myFunction2('{{ record.id }}')" class="c-dropbtn bx bx-chevron-down"
+                                        style="font-size:xx-large;padding: 5px;"></i>
+                                    <div id="c-Dropdown-{{ record.id }}" class="c-dropdown-content">
+                                        <a href="#home">Home</a>
+                                        <a href="#about">About</a>
+                                        <a href="{%url 'tests' sub_code=record.sub_code %}">Tests & Quizes</a>
+                                        <a href="#home">Assignment</a>
+                                        <a href="#about">Syllabus</a>
+                                        <a href="#contact">Resources</a>
+                                        <a href="#home">Anouncement</a>
+                                    </div>
+                                </div>
+
+
+                            </li>{% endfor %}
+
+                     
+
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="cont1">
+            <div class="contL">
+                <h2> Om Amriteswaryai Namah
+                </h2>
+
+                <p style="font-style: italic;"> “Always keep a positive attitude towards life. Optimism is a great tool
+                    to eliminate agony from life.”
+                </p>
+
+
+                <br>
+                <p style="font-size:small;"> Chancellor,<br>
+                    Sri Mata Amritanandamayi Devi
+                </p>
+            </div>
+
+
+            <div class="contR">
+                <div class="wrapper">
+                    <header>
+                        <p class="current-date"></p>
+                        <div class="icons">
+                            <span id="prev" class="material-symbols-rounded">chevron_left</span>
+                            <span id="next" class="material-symbols-rounded">chevron_right</span>
+                        </div>
+                    </header>
+                    <div class="calendar">
+                        <ul class="weeks">
+                            <li>Sun</li>
+                            <li>Mon</li>
+                            <li>Tue</li>
+                            <li>Wed</li>
+                            <li>Thu</li>
+                            <li>Fri</li>
+                            <li>Sat</li>
+                        </ul>
+                        <ul class="days"></ul>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+
+<script>
+    let btn = document.querySelector('#btn');
+    let sidebar = document.querySelector('.sidebar');
+
+    btn.onclick = function () {
+        sidebar.classList.toggle('active');
+    };
+
+
+    body.onclick = function () {
+        sidebar.classList.remove('active');
+    };
+
+
+
+    const daysTag = document.querySelector(".days"),
+        currentDate = document.querySelector(".current-date"),
+        prevNextIcon = document.querySelectorAll(".icons span");
+
+    // getting new date, current year and month
+    let date = new Date(),
+        currYear = date.getFullYear(),
+        currMonth = date.getMonth();
+
+    // storing full name of all months in array
+    const months = ["January", "February", "March", "April", "May", "June", "July",
+        "August", "September", "October", "November", "December"];
+
+    const renderCalendar = () => {
+        let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
+            lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
+            lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(), // getting last day of month
+            lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
+        let liTag = "";
+
+        for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
+            liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
+        }
+
+        for (let i = 1; i <= lastDateofMonth; i++) { // creating li of all days of current month
+            // adding active class to li if the current day, month, and year matched
+            let isToday = i === date.getDate() && currMonth === new Date().getMonth()
+                && currYear === new Date().getFullYear() ? "active" : "";
+            liTag += `<li class="${isToday}">${i}</li>`;
+        }
+
+        for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
+            liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
+        }
+        currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
+        daysTag.innerHTML = liTag;
+    }
+    renderCalendar();
+
+    prevNextIcon.forEach(icon => { // getting prev and next icons
+        icon.addEventListener("click", () => { // adding click event on both icons
+            // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
+            currMonth = icon.id === "prev" ? currMonth - 1 : currMonth + 1;
+
+            if (currMonth < 0 || currMonth > 11) { // if current month is less than 0 or greater than 11
+                // creating a new date of current year & month and pass it as date value
+                date = new Date(currYear, currMonth, new Date().getDate());
+                currYear = date.getFullYear(); // updating current year with new date year
+                currMonth = date.getMonth(); // updating current month with new date month
+            } else {
+                date = new Date(); // pass the current date as date value
+            }
+            renderCalendar(); // calling renderCalendar function
+        });
+    });
+
+
+
+
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+        document.getElementById("noti-Dropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.noti-dropbtn')) {
+            var dropdowns = document.getElementsByClassName("noti-dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function myFunction2(id) {
+    var dropdown = document.getElementById("c-Dropdown-" + id);
+    dropdown.classList.toggle("show");
+}
+
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.c-dropbtn')) {
+            var dropdowns = document.getElementsByClassName("c-dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    function myFunction3() {
+        document.getElementById("c2-Dropdown").classList.toggle("show");
+    }
+
+</script>
+
+</html>

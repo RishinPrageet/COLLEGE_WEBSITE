@@ -1,0 +1,420 @@
+{% load static %}
+{% csrf_token %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUMS</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+</head>
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.user-img{
+    min-width: 60px;
+        max-width:60px;
+        height: 60px;
+        border-radius: 100%;
+}
+
+.sidebar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1000%;
+    width: 80px;
+    background-color: black;
+    padding: .4rem 0.8rem;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active ~ .main-content{
+    left: 250px;
+    width: calc(100% - 250px); 
+}
+
+.sidebar.active{
+    width: 250px;
+    height: 100%;
+}
+
+
+
+.sidebar #btn{
+    position: absolute;
+    color: white;
+    top : .4rem;
+    left: 50%;
+    font-size: 1.2rem;
+    line-height: 50px;
+    transform: translateX(-50%);
+}
+
+.sidebar.active #btn{
+    left: 90%;
+}
+
+.sidebar .top .logo{
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.sidebar .logo img{
+    height: 50px;
+    margin: 8px;
+    padding: 2px;
+}
+
+.sidebar.active .top .logo{
+    opacity: 1;
+}
+
+.top .logo i{
+    font-size: 2rem;
+    margin-right: 5px;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.user p{
+    color: white;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+.bold{
+    font-weight: 600;
+}
+
+.sidebar p{
+    opacity: 0;
+}
+.sidebar.active p{
+    opacity: 1;
+}
+
+.sidebar ul li{
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 90%;
+    margin: 0.8rem auto;
+    line-height: 50px;
+}
+
+.sidebar ul li a{
+    color: white;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 0.8rem;
+}
+
+.sidebar ul li a:hover{
+    background-color: white;
+    color: black;
+    padding: 0px;
+}
+
+.sidebar i{
+  scale: 1.2;
+}
+
+.sidebar.active .top i{
+  transform: rotate(90deg);
+}
+
+.sidebar ul li a i{
+    min-width: 50px;
+    text-align: center;
+    height: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+}
+
+.sidebar .nav-item{
+    opacity: 0;
+}
+
+.sidebar.active .nav-item{
+    opacity: 1;
+}
+
+.sidebar ul li .tooltip{
+    position: absolute;
+    background-color: #222229;
+    background-image: linear-gradient(62deg, #222229 0%, #745368 100%);
+        left: 125px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    top: 50%;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+    border-radius: .6rem;
+    padding: .4rem 1.2rem;
+    line-height: 1.8rem;
+    z-index: 20;
+    opacity: 0;
+}
+
+.sidebar ul li:hover .tooltip{
+    opacity: 1;
+}
+
+.sidebar.active ul li .tooltip{
+    display: none;
+}
+
+.sidebar.active ul li{
+  font-weight: bold;
+}
+
+.main-content{
+    position: relative;
+    background-color: #eee;
+    min-height: 100vh;
+    top: 0;
+    left: 80px;
+    transition: all 0.5s ease;
+    width: calc(100% - 80px);
+}
+    
+    .container{
+        background-color: white;
+        margin: 0;
+        padding: 1rem;
+        padding-left: 40px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .page-cont {
+            margin: 30px;
+            padding: 30px; 
+            background-color: white;
+            height: 100%;
+            border-radius: 30px;
+        }
+
+        table{
+            width: 90% ;
+            background-color: white;
+            margin: 30px;
+        }
+
+        table,th,tr,td{
+            border:1px solid black;
+            border-collapse: collapse;
+        }
+
+        td,th{
+            padding: 10px 15px;
+        }
+
+        h1{
+            color: rgb(128, 55, 77);
+            padding-left: 30px;
+        }
+
+        label{
+            font-family: monospace;
+            font-size: large;
+            color: rgb(103, 103, 103);
+            padding-left: 60px;
+        }
+
+        input{
+            margin: 20px;
+            padding: 5px 10px;
+            width: 70px;
+        }
+
+        hr{
+            margin: 15px;
+        }
+
+        table.activ{
+            display: none;
+        }
+</style>
+<body>
+    
+    <div class="sidebar" id="btn">
+        <div class="top">
+            <div class="logo"><a href="{% url 'aums'%}">
+                <img src={% static 'amrita-logo.png' %}  alt=""></a>
+            </div>
+            <i class='bx bx-chevrons-right' id="btn"></i>
+        </div>
+        
+        <ul>
+            <li>
+                <a href="{% url 'attendance'%}">
+                    <i class='bx bx-calendar'></i>                    <span class="nav-item">Attendace</span>
+                </a>
+                <span class="tooltip">Attendance</span>
+            </li>
+
+            <li>
+                <a href="{% url 'marks'%}">
+                    <i class="bx bxs-grid-alt"></i>
+                    <span class="nav-item">Marks</span>
+                </a>
+                <span class="tooltip">Marks</span>
+            </li>
+
+            <li>
+                <a href="{% url 'grades'%}">
+                    <i class='bx bxs-graduation'></i>                    <span class="nav-item">Grades</span>
+                </a>
+                <span class="tooltip">Grades</span>
+
+            </li>
+
+            <li>
+                <a href="templates\authentication\sign.html">
+                    <i class='bx bxs-credit-card'></i>
+                    <span class="nav-item">Fees</span>
+                </a>
+                <span class="tooltip">Fees</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-book'></i>                    <span class="nav-item">Library</span>
+                </a>
+                <span class="tooltip">Library</span>
+            </li>
+        </ul>
+
+        <div class="user"><a href="{% url 'profile'%} ">
+            <img src="{{profile_pic}}" alt="" class="user-img"></a>
+            <div>
+                <p class="bold">{{first_name}}</p>
+                <p style="font-size: small;"><a href="{% url 'signout'%}" style="text-decoration:none;color:white;">logout</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <h1>{{ sub_code }}</h1>
+            <div>
+                <a href="#"><i style="font-size:xx-large;padding: 5px;" class='bx bxs-bell-ring'></i></a>       
+                <a href="#"><i style="font-size:xx-large;padding: 5px;margin-left: 10px;" class='bx bx-support'></i></a>      
+            </div>
+        </div>
+    </div>
+    
+
+        <div class="page-cont">
+
+            <h2>Take an Assessment</h2>
+            <p class="nothing">There are currently no assesments available for you to take</p>
+
+            <h2>Submitted Assessments</h2>
+            <p>You have completed the assessments listed below. Unless Feedback Available displays "n/a" (not applicable), feedback will be available at the time shown. If feedback is available for particular submissions, it will be seen under "View All Submissions/Scores".</p>
+
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Stats</th>
+                    <th>Recorded</th>
+                    <th>Feedback</th>
+                    <th>individual Score</th>
+                    <th>Time</th>
+                    <th>Submitted</th>
+                </tr>
+
+                <td>
+                    22ADM111-P1-19Apr
+                </td>
+                <td>
+                    n/a
+                </td>
+                <td>
+                    n/a
+                </td>
+                <td>
+                    n/a
+                </td>
+                <td>
+                    n/a
+                </td>
+                <td>
+                    40 min 26 sec	
+                </td>
+                <td>
+                    Apr 19, 2023 12:58 PM
+                </td>
+                <tr>
+                    <td>
+                        22ADM111-P1-19Apr
+                    </td>
+                    <td>
+                        n/a
+                    </td>
+                    <td>
+                        n/a
+                    </td>
+                    <td>
+                        n/a
+                    </td>
+                    <td>
+                        n/a
+                    </td>
+                    <td>
+                        40 min 26 sec	
+                    </td>
+                    <td>
+                        Apr 19, 2023 12:58 PM
+                    </td>
+                </tr>
+            </table>
+
+        </div>    
+    </div>
+
+</body>
+
+<script>
+    let btn = document.querySelector('#btn');
+    let sidebar = document.querySelector('.sidebar');
+
+    btn.onclick = function () {
+        sidebar.classList.toggle('active');
+    };
+
+    function semes() {
+        var sem = document.getElementById('semester').value;
+        sem=parseInt(sem);
+            for (let i = 0; i < 2; i++) {
+                if(i!=sem-1){
+                document.getElementsByClassName("activ")[i].style.display = "none";
+            }
+                
+            }
+            document.getElementsByClassName("activ")[sem-1].style.display = "block";
+        
+        }
+   
+   
+</script>
+
+</html>

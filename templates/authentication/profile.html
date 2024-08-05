@@ -1,0 +1,464 @@
+{% load static %}
+{% csrf_token %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUMS</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+</head>
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.user-img{
+    min-width: 60px;
+        max-width:60px;
+        height: 60px;
+        border-radius: 100%;
+}
+
+.sidebar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1000%;
+    width: 80px;
+    background-color: black;
+    padding: .4rem 0.8rem;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active ~ .main-content{
+    left: 250px;
+    width: calc(100% - 250px); 
+}
+
+.sidebar.active{
+    width: 250px;
+    height: 100%;
+}
+
+
+
+.sidebar #btn{
+    position: absolute;
+    color: white;
+    top : .4rem;
+    left: 50%;
+    font-size: 1.2rem;
+    line-height: 50px;
+    transform: translateX(-50%);
+   
+}
+
+.sidebar.active #btn{
+    left: 90%;
+    transform: rotate(90deg);
+}
+
+.sidebar .top .logo{
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    opacity: 0;
+}
+
+.sidebar .logo img{
+    height: 50px;
+    margin: 8px;
+    padding: 2px;
+}
+
+.sidebar.active .top .logo{
+    opacity: 1;
+}
+
+.top .logo i{
+    font-size: 2rem;
+    margin-right: 5px;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.user p{
+    color: white;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+.bold{
+    font-weight: 600;
+}
+
+.sidebar p{
+    opacity: 0;
+}
+.sidebar.active p{
+    opacity: 1;
+}
+
+.sidebar ul li{
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 90%;
+    margin: 0.8rem auto;
+    line-height: 50px;
+}
+
+.sidebar ul li a{
+    color: white;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 0.8rem;
+}
+
+.sidebar ul li a:hover{
+    background-color: white;
+    color: black;
+    padding: 0px;
+}
+
+.sidebar i{
+  scale: 1.2;
+}
+
+.sidebar.active .top i{
+  transform: rotate(90deg);
+}
+
+.sidebar ul li a i{
+    min-width: 50px;
+    text-align: center;
+    height: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+}
+
+.sidebar .nav-item{
+    opacity: 0;
+}
+
+.sidebar.active .nav-item{
+    opacity: 1;
+}
+
+.sidebar ul li .tooltip{
+    position: absolute;
+    background-color: #222229;
+    background-image: linear-gradient(62deg, #222229 0%, #745368 100%);
+        left: 125px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    top: 50%;
+    transform: translate(-50%,-50%);
+    box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+    border-radius: .6rem;
+    padding: .4rem 1.2rem;
+    line-height: 1.8rem;
+    z-index: 20;
+    opacity: 0;
+}
+
+.sidebar ul li:hover .tooltip{
+    opacity: 1;
+}
+
+.sidebar.active ul li .tooltip{
+    display: none;
+}
+
+.sidebar.active ul li{
+  font-weight: bold;
+}
+
+.main-content{
+    position: relative;
+    background-color: #eee;
+    min-height: 100vh;
+    top: 0;
+    left: 80px;
+    transition: all 0.5s ease;
+    width: calc(100% - 80px);
+}
+    
+    .container{
+        background-color: white;
+        margin: 0;
+        padding: 1rem;
+        padding-left: 40px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .cont{
+        background-color: white;
+        height: 100vh;
+        margin: 20px;
+        border-radius: 20px;
+    }
+    .page-cont {
+        margin: 30px;
+        overflow: hidden;
+    }
+
+    table{
+        background-color: white;
+        border-radius: 30px;
+        overflow: hidden;
+    }
+
+    .page-cont tr{
+    }
+
+    .page-cont table,
+    tr{
+        border: 1px solid black;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .page-cont td {
+        padding: 10px 15px;
+    }
+
+    h3{
+        padding: 20px;
+        background-color:#eee;
+    }
+</style>
+<body>
+    
+    <div class="sidebar" id="btn">
+        <div class="top">
+            <div class="logo"><a href="{% url 'aums'%}">
+                <img src={% static 'amrita-logo.png' %}  alt=""></a>
+            </div>
+            <i class='bx bx-chevrons-right' id="btn"></i>
+        </div>
+        
+        <ul>
+            <li>
+                <a href="{% url 'attendance'%}">
+                    <i class='bx bx-calendar'></i>                    <span class="nav-item">Attendace</span>
+                </a>
+                <span class="tooltip">Attendance</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bx bxs-grid-alt"></i>
+                    <span class="nav-item">Marks</span>
+                </a>
+                <span class="tooltip">Marks</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class='bx bxs-graduation'></i>                    <span class="nav-item">Grades</span>
+                </a>
+                <span class="tooltip">Grades</span>
+
+            </li>
+
+            <li>
+                <a href="templates\authentication\sign.html">
+                    <i class='bx bxs-credit-card'></i>
+                    <span class="nav-item">Fees</span>
+                </a>
+                <span class="tooltip">Fees</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-book'></i>                    <span class="nav-item">Library</span>
+                </a>
+                <span class="tooltip">Library</span>
+            </li>
+        </ul>
+
+        <div class="user">
+            <a href="{% url 'profile'%}"><img src="{{profile_pic}}" alt="" class="user-img"></a>
+            <div>
+                <p class="bold">{{first_name}}</p>
+                <p style="font-size: small;"><a href="{% url 'signout'%}" style="text-decoration:none;color:white;">logout</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <h1>Welcome, {{first_name}} {{ last_name}}</h1>
+            <div>
+            <a href="#"><i style="font-size:xx-large;padding: 5px;" class='bx bxs-bell-ring'></i></a>       
+            <a href="#"><i style="font-size:xx-large;padding: 5px;margin-left: 10px;" class='bx bx-support'></i></a>      
+            </div>
+        </div>
+
+        <div class="page-cont">
+
+            <table>
+                <tr>
+                    <td><img style="min-height: 200px;border-radius: 100px;max-height: 300px; " src="{{profile_pic}}" alt=""></td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>Name</td>
+                                <td>{{first_name}}</td>
+                                <td>Application no.</td>
+                                <td>1017014</td>
+                            </tr>
+                            <tr>
+                                <td>DOB</td>
+                                <td>25-06-2004</td>
+                                <td>Program</td>
+                                <td>B.tech</td>
+                            </tr>
+                            <tr>
+                                <td>Mobile Number</td>
+                                <td>9600884374</td>
+                                <td>Specialization</td>
+                                <td>CSE</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>{{email}}</td>
+                                <td>Batch</td>
+                                <td>CB22UCSEF</td>
+                            </tr>
+                            <tr>
+                                <td>Campus</td>
+                                <td>Coimbatore</td>
+                                <td>School</td>
+                                <td>School of Computing-Coimbatore</td>
+                            </tr>
+                            <tr>
+                                <td>Allotment</td>
+                                <td>Merit</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <h3>Personal Information</h3>
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td>{{first_name}}</td>
+                    <td>Contact Email</td>
+                    <td>{{email}}</td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>Male</td>
+                    <td>Mobile Number</td>
+                    <td>1234567890</td>
+                </tr>
+                <tr>
+                    <td>Blood Group</td>
+                    <td>O+</td>
+                    <td>Native Place</td>
+                    <td>Coimbatore</td>
+                </tr>
+                <tr>
+                    <td>Mother Tongue</td>
+                    <td>Tamil</td>
+                    <td>State</td>
+                    <td>Tamil Nadu </td>
+                </tr>
+                <tr>
+                    <td>Religion</td>
+                    <td>Hindu</td>
+                    <td>Nationality</td>
+                    <td>Indian</td>
+                </tr>
+                <tr>
+                    <td>Community/td>
+                    <td>OBC</td>
+                    <td>Caste</td>
+                    <td> BIG Gounder</td>
+                </tr>
+                <tr>
+                    <td>Land Phone Code</td>
+                    <td>-</td>
+                    <td>Land Phone No</td>
+                    <td>-</td>
+                </tr>
+            </table>
+
+            <h3>Parent Information</h3>
+            <table>
+                <tr>
+                    <td>Father's Name</td>
+                    <td>-</td>
+                    <td>Father's office</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Father's Eamil</td>
+                    <td>-</td>
+                    <td>Father's Office Address</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Father's Date Of Brith</td>
+                    <td>-</td>
+                    <td>Father's Office Post</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Father's Age</td>
+                    <td>-</td>
+                    <td>Father's Office Pin</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Father's Mobile Number</td>
+                    <td>-</td>
+                    <td>Father's Office State/td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Mother's Name</td>
+                    <td>-</td>
+                    <td>Mother's Office Address</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Mother's Email</td>
+                    <td>-</td>
+                    <td>Mother's Office Post</td>
+                    <td>-</td>
+                </tr>
+                </table>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+    let btn = document.querySelector('#btn');
+    let sidebar = document.querySelector('.sidebar');
+
+    btn.onclick = function () {
+        sidebar.classList.toggle('active');
+    };
+</script>
+</html>
